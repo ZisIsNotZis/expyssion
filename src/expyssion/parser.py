@@ -38,6 +38,7 @@ class Parser:
         self.toks = tokens
         self.i = 0
         self._last_unit = None
+        self._line_broken = False  # a block-bodied lambda ended the line
 
     # --- token helpers ---
     def peek(self, k=0):
@@ -75,7 +76,10 @@ class Parser:
         while True:
             while self.at("NEWLINE"):
                 self.next()
-            if self.at("EOF") or self.at("DEDENT"):
+            if self.at("EOF"):
+                break
+            if self.at("DEDENT"):
+                self.next()  # this block's terminator — consumed exactly once
                 break
             expr = self.parse_expr()
             # line ownership: deeper lines attach to the line's last unit
@@ -98,6 +102,9 @@ class Parser:
                 new = Call(head=owner, args=sub, pos=owner.pos)
                 expr = _replace(expr, owner, new)
             exprs.append(expr)
+            if self._line_broken:
+                self._line_broken = False  # the block consumed the line end
+                continue
             if self.at("NEWLINE"):
                 self.next()
             elif not (self.at("EOF") or self.at("DEDENT")):
@@ -143,15 +150,23 @@ class Parser:
         e = self._postfix_primary()
         if greedy:
             args, kwargs = [], []
-            while self._starts_arg():
+            zero_call = False
+            # literals never act as call heads — their following units belong
+            # to the enclosing call (`if n<= 1 (: a) (: b)` stays if(n<=1, a, b))
+            while self._starts_arg() and not isinstance(e, Lit) and not self._line_broken:
                 t = self.peek()
+                if t.type == "PUNCT" and t.value == "(" and self.peek(1).type == "PUNCT" and self.peek(1).value == ")":
+                    self.next()
+                    self.next()
+                    zero_call = True  # `f ()` — the bare-call marker
+                    continue
                 if t.type == "NAME" and self.peek(1).type == "OP" and self.peek(1).value == ":=" and self.peek(1).glued:
                     self.next()
                     self.next()
                     kwargs.append((t.value, self.parse_expr()))
                     continue
                 args.append(self.parse_arg())
-            if args or kwargs:
+            if args or kwargs or zero_call:
                 e = Call(head=e, args=args, kwargs=kwargs, pos=e.pos)
         return e
 
@@ -241,10 +256,14 @@ class Parser:
             params = self._parse_params()
             if not self.eat("PUNCT", ")"):
                 self.err("expected ')' after parameter list")
+            colon = self.eat("PUNCT", ":")
+            if colon is None:
+                self.err("expected ':' after parameter group")
             return self._finish_lambda(params, (t.line, t.col))
         inner = self.parse_expr()
         if not self.eat("PUNCT", ")"):
             self.err("expected ')'")
+        self._line_broken = False
         return inner
 
     def _is_param_group_after_open(self):
@@ -332,6 +351,7 @@ class Parser:
             self.next()
             self.next()
             exprs = self._parse_lines()
+            self._line_broken = True  # the block ended the enclosing line
             body = Block(exprs=exprs, pos=pos)
         else:
             body = self.parse_expr()

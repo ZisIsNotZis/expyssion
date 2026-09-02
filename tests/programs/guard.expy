@@ -1,0 +1,6 @@
+# litmus 3: guard-style early return
+guard= x:
+  if x< 0 (: return 0)
+  x* 2
+print (guard -5)
+print (guard 3)

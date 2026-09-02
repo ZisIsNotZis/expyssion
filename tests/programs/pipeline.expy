@@ -1,0 +1,7 @@
+# litmus 2: generator pipeline consumed by a comprehension
+nums= :
+  for (range 100) x:
+    yield x
+list (for nums x:
+  if x%3== 0 (: yield x* x)
+)

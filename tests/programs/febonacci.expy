@@ -1,0 +1,3 @@
+# litmus 1: recursion + if with thunk branches
+febonacci= n: if n<= 1 (: n) (: (febonacci n- 1)+ febonacci n- 2)
+print (febonacci 10)
