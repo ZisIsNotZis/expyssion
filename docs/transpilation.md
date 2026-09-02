@@ -128,4 +128,4 @@ Machine walk (as-if): `list`'s call loop spawns the for-call; each body `yield` 
 
 ## Library highlights
 
-`int a/b` floor division ▶ · `neg x` ▶ · `map`/`filter` lazy ▶ · `first` via `next` ▶ · `range zip len sorted print isinstance getattr str int float sum min max abs enumerate reversed` re-exported ◇ · `import name` binds the module object ▶ (`np.arange 10`, `a.max ()` with numpy ▶) · `with_resource acquire (:r: body)` — finally-based cleanup; drivers inject GeneratorExit on break/error ◇ · no `//`, no augmented operators, no `yield from`, no generics, no runtime type enforcement ◇.
+`int a/b` floor division ▶ · `neg x` ▶ · `map`/`filter` lazy ▶ · `first` via `next` ▶ · `range zip len sorted print isinstance getattr str int float sum min max abs enumerate reversed` re-exported ◇ · `import "name"` binds the module object ▶ (`np.arange 10`, `a.max ()` with numpy ▶) · `with_resource acquire (:r: body)` — finally-based cleanup; drivers inject GeneratorExit on break/error ◇ · no `//`, no augmented operators, no `yield from`, no generics, no runtime type enforcement ◇.

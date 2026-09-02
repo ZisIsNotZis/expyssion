@@ -4,7 +4,7 @@ Version: 1.0 · everything is an expression; everything is a call
 
 Glossary: [CONTEXT.md](CONTEXT.md) · Proof corpus: [docs/transpilation.md](docs/transpilation.md) · Rationale: [docs/adr/0001-sync-point-effect-machine.md](docs/adr/0001-sync-point-effect-machine.md) · Substrate facts: [wayfinder/research/greenlet-runtime-facts.md](wayfinder/research/greenlet-runtime-facts.md)
 
-expyssion is a personal expression language that transpiles to Python. There are no keywords: control structures are ordinary functions of callables, and the only hard-wired syntax is `=` and `:` — every other name, including builtin control structures, can be shadowed. Semantics are defined by the sync-point effect machine (§8): every call behaves as-if it runs at a sync point on greenlets, which is what lets `yield`, `return`, and `break` cross lambda boundaries. Literals and truthity are Python's, including f-strings.
+expyssion is a personal expression language, interpreted on Python (ADR 0002): an AST tree-walking interpreter implements the sync-point effect machine literally. There are no keywords: control structures are ordinary functions of callables, and the only hard-wired syntax is `=` and `:` — every other name, including builtin control structures, can be shadowed. Semantics are defined by the sync-point effect machine (§8): every call behaves as-if it runs at a sync point on greenlets, which is what lets `yield`, `return`, and `break` cross lambda boundaries. Literals and truthity are Python's, including f-strings.
 
 ## 1 Calls and blocks
 
@@ -77,7 +77,7 @@ All control structures are ordinary functions of callables; loud errors (§12) m
 - Control: `if c t (e?)`, `while cond body (else?)`, `for iter body (else?)`, `try body handler`, `raise exc`, `with_resource acquire (:r: body)`.
 - Collectors: `list x`, `dict x`, `set x` (exactly one argument).
 - Sequences & values: `range zip len map filter first sorted enumerate reversed sum min max abs print str int float isinstance getattr neg` — lazy `map`/`filter`; floor division is `int a/b`.
-- Modules: `import name` binds the module object; reach everything else by attribute.
+- Modules: `import "name"` is an ordinary builtin taking the module-name string and binding the module object — `np= import "numpy"`; `plt= (import "matplotlib").pyplot`.
 
 ## 10 Python interop
 
