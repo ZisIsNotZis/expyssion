@@ -129,7 +129,7 @@ list g    # ✓ 同线程（list 驱动 g）
 ## 007 — Litmus programs（验收三程序）
 
 ```
-febonacci= n: if n<=1 (:n) (: febonacci n- 1 n- 2)
+febonacci= n: if n<=1 (:n) (: (febonacci n- 1)+ febonacci n- 2)
 febonacci 10        # 55 —— 分支是callable，字面量分支要包 thunk
 
 nums= generator (: for (range 100) x: yield x)

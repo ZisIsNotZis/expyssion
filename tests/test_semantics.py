@@ -364,3 +364,25 @@ gen
     assert next(it) == 1
     it.close()  # must unwind without error
     assert list(it) == []
+
+
+def test_vararg_and_kwarg_collection():
+    assert run("""
+sum_all= (..:int):
+  total= 0
+  for .. x: total= total+ x
+  total
+sum_all 1 2 3
+""") == 6
+
+
+def test_kwargs_extras_land_in_dstar():
+    assert run("""
+f= (...): ...
+f a:= 1 b:= 2
+""") == {"a": 1, "b": 2}
+
+
+def test_default_evaluated_when_missing():
+    assert run("f= (x= 7): x\nf ()") == 7
+    assert run("f= (x= 7): x\nf 3") == 3

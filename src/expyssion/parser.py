@@ -177,7 +177,7 @@ class Parser:
         t = self.peek()
         if t.type in ARG_STARTERS:
             return True
-        if t.type == "PUNCT" and t.value in ("(", "[", ":"):
+        if t.type == "PUNCT" and t.value in ("(", "[", ":", "..", "..."):
             return True
         return False
 
@@ -233,6 +233,9 @@ class Parser:
             if nxt.type == "PUNCT" and nxt.value == ":" and nxt.glued:
                 self.next()
                 return self._finish_lambda([Param(name=t.value)], (t.line, t.col))
+            return Name(id=t.value, pos=(t.line, t.col))
+        if t.type == "PUNCT" and t.value in ("..", "..."):
+            self.next()
             return Name(id=t.value, pos=(t.line, t.col))
         if t.type == "PUNCT" and t.value == ":":
             self.next()
