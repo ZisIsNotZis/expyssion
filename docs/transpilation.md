@@ -1,8 +1,8 @@
 # expyssion — transpilation proof corpus
 
-Proof artifact for LANGUAGE.md v1 (spec: wayfinder/spec.md, ticket 007). Every construct maps to plain, readable Python — the "elided" form below is what a compliant compiler may emit; the "as-if" form is the normative semantics when it must not inline (ticket 013).
+Semantic-equivalence reference for LANGUAGE.md v1 (spec: wayfinder/spec.md, ticket 007; repositioned by ADR 0002 — expyssion is interpreted, not transpiled). For every construct: the plain Python that means the same thing. The executable oracle is docs/verify_corpus.py.
 
-**Verification:** `docs/verify_corpus.py` — 40 checks, all passing (2025-09-01, CPython 3.9 + greenlet 3.2.5 + numpy 2.0). Markers: ▶ executed & verified · ◇ normative-only (needs the runtime; spec-defined, not executable here).
+**Verification:** `docs/verify_corpus.py` — 40 checks, all passing (re-verified 2025-09-02, CPython 3.12 + greenlet 3.5.5 + numpy). Markers: ▶ executed & verified · ◇ normative-only (needs the runtime; spec-defined, not executable here).
 
 ## Calls & blocks
 
@@ -83,7 +83,7 @@ Assignment edits the nearest lexical ancestor binding (auto closure cells), else
 |---|---|
 | `if c t e` | `t() if c else e()` — branches are invoked callables; literals wrapped as thunks `(:v)` ▶ |
 | `if c t` (no else) | `t if c else None` ▶ |
-| `clip= x: if x<0 :return 0 ; x` | see below ▶ |
+| `clip= x: if x< 0 (: return 0) (: x)` | see below ▶ |
 | `while (: x> 0) : …` | `while x > 0: …` ▶ |
 | `for iter body (else?)` | `for x in iter: …` (else runs without break) ▶ |
 | `try body handler` | `try: body() except Exception as e: handler(e)` ▶ |
