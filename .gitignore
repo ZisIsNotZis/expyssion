@@ -7,3 +7,20 @@ dist/
 build/
 .pytest_cache/
 .coverage
+
+# Common local caches and temporary workspaces
+node_modules/
+.pi/
+.tmp/
+worktrees/
+.worktrees/
+.DS_Store
+
+# Local secrets, test caches, and generated logs
+.ruff_cache/
+.mypy_cache/
+.cache/
+.env
+.env.*
+!.env.example
+*.log
