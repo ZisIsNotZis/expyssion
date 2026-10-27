@@ -19,5 +19,5 @@ Rejected alternatives: S1-pure-runtime with exceptions and user/compiler depth (
 - asyncio is cut off (blocking world chosen); multiprocessing/pickling unsupported for lambdas; forking with suspended chains is hazardous.
 - Standard tracing/profiling breaks at switches; tracebacks and error messages must be designed as a first-class feature.
 - KeyboardInterrupt between protocol steps must be made exception-safe.
-- Bonus that did not survive verification: recursion depth is **still bounded** by CPython's recursion limit — greenlet does not reset the per-thread counter across switches (verified empirically, see [research findings](../wayfinder/research/greenlet-runtime-facts.md)). The runtime must manage the limit; deep chains also produce concatenated tracebacks.
+- Bonus that did not survive verification: recursion depth is **still bounded** by CPython's recursion limit — greenlet does not reset the per-thread counter across switches (verified empirically, see [research findings](../../wayfinder/research/greenlet-runtime-facts.md)). The runtime must manage the limit; deep chains also produce concatenated tracebacks.
 - Greenlet is a small C extension coupled to CPython internals (rewritten for 3.11; free-threading experimental) — thread-per-generator with the same protocol is the stdlib fallback.
