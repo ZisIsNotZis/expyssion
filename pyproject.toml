@@ -2,7 +2,7 @@
 name = "expyssion"
 version = "0.1.0"
 description = "expyssion — everything is an expression; everything is a call. A Python-hosted expression language."
-readme = "LANGUAGE.md"
+readme = "README.md"
 requires-python = ">=3.12"
 license = "AGPL-3.0-only"
 dependencies = [

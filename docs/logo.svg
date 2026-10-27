@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="460" height="120" viewBox="0 0 460 120" role="img" aria-label="expyssion">
+  <title>expyssion</title>
+  <style>
+    .ink { fill: #0f172a; }
+    .muted { fill: #64748b; }
+    @media (prefers-color-scheme: dark) {
+      .ink { fill: #f8fafc; }
+      .muted { fill: #94a3b8; }
+    }
+  </style>
+  <rect x="4" y="4" width="112" height="112" rx="26" fill="#0f172a"/>
+  <circle cx="38" cy="40" r="5" fill="#2dd4bf"/>
+  <circle cx="38" cy="78" r="5" fill="#2dd4bf"/>
+  <path d="M64 32 L94 59 L64 86" fill="none" stroke="#2dd4bf" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="140" y="62" class="ink" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="44" font-weight="700" letter-spacing="-1.5">expyssion</text>
+  <text x="141" y="90" class="muted" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="17" letter-spacing="0.5">everything is a call</text>
+</svg>
